@@ -1,0 +1,99 @@
+# Quant Research Protocol v2
+
+## 1. Hypothesis First
+
+Do not start with a parameter grid. Start with a market hypothesis.
+
+Bad:
+
+```text
+Search for a better strategy.
+```
+
+Better:
+
+```text
+Test whether lower-noise pullback candidates outperform over the next 20
+trading days after transaction costs.
+```
+
+## 2. Data Contract
+
+Record:
+
+- data source,
+- coverage range,
+- update timestamp,
+- point-in-time status,
+- known survivorship or liquidity caveats,
+- missingness,
+- and whether the data may be used for backtest or monitor only.
+
+## 3. Label Contract
+
+A label must define:
+
+- prediction horizon,
+- benchmark or absolute return,
+- entry timing,
+- exit timing,
+- open-case handling,
+- and whether the sample is closed.
+
+## 4. Selection Discipline
+
+Use:
+
+```text
+Train -> Validation -> Test
+```
+
+Train creates candidates. Validation selects. Test evaluates once.
+
+Do not select by Test.
+
+## 5. Stress Tests
+
+At minimum, consider:
+
+- cost stress,
+- cadence or anchor stress,
+- market regime splits,
+- industry exclusion,
+- single-name contribution,
+- rolling windows,
+- and execution feasibility.
+
+## 6. Failure Logging
+
+Every major rejected candidate should have a failure reason.
+
+Examples:
+
+- `train_fail`,
+- `validation_fail`,
+- `test_best_not_selected`,
+- `oos_only_trap`,
+- `cadence_fragile`,
+- `cost_reversal`,
+- `execution_infeasible`,
+- `data_alignment_bug`.
+
+## 7. Promotion Language
+
+Use conservative labels:
+
+- `source_replay_candidate`,
+- `paper_shadow_candidate`,
+- `manual_review_candidate`,
+- `diagnostic_only`,
+- `stop_as_rule`.
+
+Avoid:
+
+- "deploy",
+- "live base",
+- "proven",
+- "guaranteed",
+- "safe",
+- unless the governance process explicitly supports that status.
