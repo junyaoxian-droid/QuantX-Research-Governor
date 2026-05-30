@@ -10,7 +10,9 @@ strategy. It contains the research discipline around strategy work:
 
 - hypothesis-first design,
 - Train / Validation / Test selection,
+- rolling walk-forward validation,
 - cost and cadence stress,
+- standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
 - report hygiene,
 - source replay handoff,
@@ -45,6 +47,8 @@ research protocol layer.
 | Label | Align label horizon with execution timing |
 | Selection | Train creates candidates, Validation selects |
 | Test | Test is opened once after selection |
+| Rolling | Use walk-forward windows when claiming time robustness |
+| Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
 | Failure | Log rejected rows and why they failed |
 | Handoff | Provide a replay prompt for another environment |

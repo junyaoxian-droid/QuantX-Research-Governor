@@ -9,7 +9,9 @@ QuantX Research Governor 是一套面向 AI 辅助量化研究的协议和模板
 - 再做因子/标签验证；
 - Train / Validation / Test 分离；
 - Validation 选参，Test 只评估；
+- 对时间序列策略加入 rolling walk-forward，滚动窗口验证；
 - 加入成本压力和 cadence 压力；
+- 输出 Sharpe、Calmar、胜率、最大回撤、换手率等标准指标；
 - 记录失败候选；
 - 重要结果交给另一个环境 source replay；
 - 把人工判断与模型证据分开。

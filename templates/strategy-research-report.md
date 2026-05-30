@@ -18,28 +18,40 @@
 
 ## 9. Transaction Costs
 
-## 10. Train / Validation / Test Results
+## 10. Standard Metrics Summary
 
-| Candidate | Train | Validation | Test | Verdict |
-|---|---:|---:|---:|---|
-| ... | ... | ... | ... | ... |
+| Candidate | Ann. Return | Max DD | Sharpe | Sortino | Calmar | Win Rate | Turnover | Verdict |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| ... | ... | ... | ... | ... | ... | ... | ... | ... |
 
-## 11. Cadence Stress
+## 11. Train / Validation / Test Results
 
-## 12. Cost Stress
+| Candidate | Train Ann. | Train DD | Validation Ann. | Validation DD | Test Ann. | Test DD | Verdict |
+|---|---:|---:|---:|---:|---:|---:|---|
+| ... | ... | ... | ... | ... | ... | ... | ... |
 
-## 13. By-Year / By-Regime Performance
+## 12. Rolling Walk-Forward
 
-## 14. Contribution Decomposition
+| Window | Selected Candidate | Test Ann. | Test DD | Sharpe | Calmar | Pass / Fail | Reason |
+|---|---|---:|---:|---:|---:|---|---|
+| ... | ... | ... | ... | ... | ... | ... | ... |
 
-## 15. Risk Analysis
+## 13. Cadence Stress
 
-## 16. Robustness Tests
+## 14. Cost Stress
 
-## 17. Failure Cases
+## 15. By-Year / By-Regime Performance
 
-## 18. Final Verdict
+## 16. Contribution Decomposition
 
-## 19. Do-Not-Do List
+## 17. Risk Analysis
 
-## 20. Commands Used
+## 18. Robustness Tests
+
+## 19. Failure Cases
+
+## 20. Final Verdict
+
+## 21. Do-Not-Do List
+
+## 22. Commands Used

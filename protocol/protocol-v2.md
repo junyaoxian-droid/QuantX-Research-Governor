@@ -52,7 +52,47 @@ Train creates candidates. Validation selects. Test evaluates once.
 
 Do not select by Test.
 
-## 5. Stress Tests
+## 5. Rolling Walk-Forward
+
+When a strategy claims robustness over time, fixed Train / Validation / Test is
+not enough. Add rolling walk-forward windows:
+
+```text
+Train A -> Validation A -> Test A
+Train B -> Validation B -> Test B
+Train C -> Validation C -> Test C
+```
+
+Report:
+
+- window dates,
+- selected candidate,
+- Test performance,
+- pass / fail,
+- failure reason,
+- and whether the selection process is stable across windows.
+
+Do not tune future windows after seeing their Test results.
+
+## 6. Standard Metrics
+
+Report standard performance metrics before custom scores:
+
+| Metric | Purpose |
+|---|---|
+| Annualized return | Normalizes return across different horizons |
+| Max DD | Measures worst peak-to-trough loss |
+| Sharpe | Return per unit of volatility |
+| Sortino | Return per downside volatility |
+| Calmar | Annualized return divided by absolute max DD |
+| Win rate | Share of profitable trades or periods |
+| Turnover | Trading intensity and cost sensitivity |
+| Cost-adjusted return | Return after explicit transaction costs |
+| Benchmark-relative return | Excess return versus the benchmark |
+
+Custom metrics may be added, but they should not replace these fields.
+
+## 7. Stress Tests
 
 At minimum, consider:
 
@@ -64,7 +104,7 @@ At minimum, consider:
 - rolling windows,
 - and execution feasibility.
 
-## 6. Failure Logging
+## 8. Failure Logging
 
 Every major rejected candidate should have a failure reason.
 
@@ -79,7 +119,7 @@ Examples:
 - `execution_infeasible`,
 - `data_alignment_bug`.
 
-## 7. Promotion Language
+## 9. Promotion Language
 
 Use conservative labels:
 
