@@ -76,6 +76,17 @@ This repository is inspired by a private QuantX research workflow, but it is
 not the QuantX strategy repository. Strategy formulas, current candidates,
 private trade journals, and real account information are intentionally excluded.
 
+## Community
+
+Contributions are welcome from quant researchers, Codex users, backtest
+engineers, data-science practitioners, and anyone who cares about reproducible
+AI-assisted research.
+
+Useful contributions include better validation checklists, walk-forward
+templates, leakage-audit examples, source-replay workflows, metric definitions,
+and sanitized failure cases. The aim is not to chase prettier backtests, but to
+make research protocols more reliable and easier to review.
+
 ## License
 
 MIT.
