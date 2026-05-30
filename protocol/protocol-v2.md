@@ -104,7 +104,28 @@ At minimum, consider:
 - rolling windows,
 - and execution feasibility.
 
-## 8. Failure Logging
+## 8. Compute-Scale Gate
+
+Before launching a broad search, estimate the replay scale:
+
+```text
+replay units = candidates * cadences * costs * overlays * rolling windows
+```
+
+If the full Cartesian product is large, use a staged design. The stage count is
+not fixed; use the smallest sequence that still answers the research question:
+
+```text
+Early stage: select candidates under the native execution cadence and baseline cost.
+Later stages: add cadence, cost, industry, execution, and rolling stress only where needed.
+```
+
+This is not a shortcut around rigor. It prevents obviously failed candidates
+from consuming expensive robustness checks. Full grids are allowed only when the
+estimated runtime and memory are acceptable, or when exhaustive coverage is the
+explicit research question.
+
+## 9. Failure Logging
 
 Every major rejected candidate should have a failure reason.
 
@@ -119,7 +140,7 @@ Examples:
 - `execution_infeasible`,
 - `data_alignment_bug`.
 
-## 9. Promotion Language
+## 10. Promotion Language
 
 Use conservative labels:
 

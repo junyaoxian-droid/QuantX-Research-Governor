@@ -11,12 +11,27 @@ QuantX Research Governor 是一套面向 AI 辅助量化研究的协议和模板
 - Validation 选参，Test 只评估；
 - 对时间序列策略加入 rolling walk-forward，滚动窗口验证；
 - 加入成本压力和 cadence 压力；
+- 在大网格前先做 compute-scale gate，估算计算规模，再选择全量、分阶段或多阶段漏斗；
 - 输出 Sharpe、Calmar、胜率、最大回撤、换手率等标准指标；
 - 记录失败候选；
 - 重要结果交给另一个环境 source replay；
 - 把人工判断与模型证据分开。
 
 如果 `QuantX-GoalForge` 是通用的 Codex Goal 治理框架，那么本仓库就是量化研究专用协议层。
+
+## 计算规模闸门
+
+严格研究不等于无脑全量。大型回放或压力测试开始前，应先估算：
+
+```text
+replay units = candidates * cadences * costs * overlays * rolling windows
+```
+
+如果规模过大，优先采用分阶段漏斗：先用主执行口径和基准成本筛出候选，
+再对真正有价值的候选逐步增加 cadence、cost、industry、execution、rolling
+等压力测试。阶段数不是固定的；小实验可以直接全量，大实验可以两阶段或多阶段。
+
+这不是降低严谨性，而是避免把已经失败的候选送进所有昂贵压力测试。
 
 ## 不包含什么？
 

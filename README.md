@@ -12,6 +12,7 @@ strategy. It contains the research discipline around strategy work:
 - Train / Validation / Test selection,
 - rolling walk-forward validation,
 - cost and cadence stress,
+- compute-scale gates before broad grids,
 - standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
 - report hygiene,
@@ -50,6 +51,7 @@ research protocol layer.
 | Rolling | Use walk-forward windows when claiming time robustness |
 | Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
+| Compute | Estimate replay scale; use finalist funnels before exhaustive stress |
 | Failure | Log rejected rows and why they failed |
 | Handoff | Provide a replay prompt for another environment |
 
