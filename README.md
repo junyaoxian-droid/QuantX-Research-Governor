@@ -13,6 +13,7 @@ strategy. It contains the research discipline around strategy work:
 - rolling walk-forward validation,
 - cost and cadence stress,
 - compute-scale gates before broad grids,
+- adaptive staged funnels before expensive full stress,
 - standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
 - report hygiene,
@@ -51,7 +52,9 @@ research protocol layer.
 | Rolling | Use walk-forward windows when claiming time robustness |
 | Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
-| Compute | Estimate replay scale; use finalist funnels before exhaustive stress |
+| Compute | Estimate replay scale; use adaptive finalist funnels before exhaustive stress |
+| Run discipline | Use long-running job time to prepare expectations, failure branches, and next iterations |
+| Parallelism | Use subagents/parallel jobs only for bounded independent audit/replay/QA with resource headroom |
 | Failure | Log rejected rows and why they failed |
 | Handoff | Provide a replay prompt for another environment |
 

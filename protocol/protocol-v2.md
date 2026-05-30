@@ -104,7 +104,20 @@ At minimum, consider:
 - rolling windows,
 - and execution feasibility.
 
-## 8. Compute-Scale Gate
+## 8. Pre-Run Workflow Check
+
+Before a heavy experiment starts, confirm that the workflow is appropriate:
+
+- hypothesis is defined,
+- Train / Validation / Test roles are clear,
+- Validation selects and Test only evaluates,
+- the compute plan is sized,
+- success and failure rules are explicit,
+- and expected outputs are known.
+
+If these are unclear, do not launch a full search.
+
+## 9. Compute-Scale Gate
 
 Before launching a broad search, estimate the replay scale:
 
@@ -125,7 +138,30 @@ from consuming expensive robustness checks. Full grids are allowed only when the
 estimated runtime and memory are acceptable, or when exhaustive coverage is the
 explicit research question.
 
-## 9. Failure Logging
+## 10. Long-Run Thinking
+
+While a long experiment is running, the agent should prepare a pre-mortem:
+
+- expected result,
+- success / partial-success / failure interpretation,
+- next iteration if the run fails,
+- likely data or label bug triggers,
+- output files to inspect first.
+
+If the result differs from expectation, analyze why before launching another
+run.
+
+## 11. Subagents and Parallelism
+
+Subagents are useful for fixed replay, label audit, report QA, and source-replay
+handoff drafts. They should not choose final promotion or invent new strategy
+lines.
+
+Parallel execution is allowed only when tasks are independent, write to separate
+outputs, and CPU/memory headroom is healthy. If memory pressure is high, prefer
+staged sequential execution.
+
+## 12. Failure Logging
 
 Every major rejected candidate should have a failure reason.
 
@@ -140,7 +176,7 @@ Examples:
 - `execution_infeasible`,
 - `data_alignment_bug`.
 
-## 10. Promotion Language
+## 13. Promotion Language
 
 Use conservative labels:
 
