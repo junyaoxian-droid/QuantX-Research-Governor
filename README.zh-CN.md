@@ -12,10 +12,12 @@ QuantX Research Governor 是一套面向 AI 辅助量化研究的协议和模板
 - 对时间序列策略加入 rolling walk-forward，滚动窗口验证；
 - 加入成本压力和 cadence 压力；
 - 在大网格前先做 compute-scale gate，估算计算规模，再选择全量、分阶段或多阶段漏斗；
+- 增加 efficiency modes，让简单查询保持轻量，大型实验才完整治理；
 - 重实验运行期间不空等，要提前写出预期结果、失败分支、下一轮迭代方向；
 - subagent 和并行只用于独立审计、固定回放、报告 QA 或 handoff，不让它们决定最终升级；
 - 输出 Sharpe、Calmar、胜率、最大回撤、换手率等标准指标；
 - 记录失败候选；
+- 增加 adoption gate，把 agent 建议和用户确认采用分开；
 - 重要结果交给另一个环境 source replay；
 - 把人工判断与模型证据分开。
 
@@ -34,6 +36,38 @@ replay units = candidates * cadences * costs * overlays * rolling windows
 等压力测试。阶段数不是固定的；小实验可以直接全量，大实验可以两阶段或多阶段。
 
 这不是降低严谨性，而是避免把已经失败的候选送进所有昂贵压力测试。
+
+## 效率模式
+
+研究治理要和任务风险匹配。
+
+| 模式 | 适用场景 | 处理方式 |
+|---|---|---|
+| `quick_monitor` | 最新信号、持仓复盘、一张表 | 只读当前 Hub 和相关最新报告 |
+| `standard_check` | 单个假设或小回放 | 固定范围、轻量报告、最小验证 |
+| `governance_patch` | 记忆、Hub、索引清理 | 只改目标治理文件 |
+| `heavy_experiment` | 大搜索、滚动验证、升级证据 | 完整协议、分阶段计算漏斗、升级采用闸门 |
+
+简单 monitor 不需要完整 TVT/rolling/cost/cadence 流程；但可能改变主线的实验不能跳过这些流程。
+
+## 升级采用闸门
+
+研究报告可以给出“建议升级”，但不能自动改写当前策略层级。每次重要实验后，
+先输出 adoption table：
+
+| 分类 | 含义 |
+|---|---|
+| `recommended_upgrade` | 证据足够强，建议升级，但等待人工确认 |
+| `source_replay_candidate` | 值得在源环境复现 |
+| `paper_shadow_candidate` | 值得跟踪，不作为主线 |
+| `manual_review_candidate` | 只辅助人工复核 |
+| `diagnostic_only` | 有解释力，不可执行 |
+| `stop_as_rule` | 停止作为规则推进 |
+
+只有研究负责人确认哪些实验线升级、保留或淘汰后，才更新研究地图、README
+或其他项目 source-of-truth 文件。skill 描述的是流程行为，不保存当前策略事实；
+只有用户明确要求调整研究流程时才修改 skill。这样可以避免每轮实验后出现一堆
+互相竞争的“主线”。
 
 ## 不包含什么？
 

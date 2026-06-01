@@ -194,3 +194,28 @@ Avoid:
 - "guaranteed",
 - "safe",
 - unless the governance process explicitly supports that status.
+
+## 14. Adoption Gate
+
+Promotion language is still only a recommendation. A report must separate:
+
+```text
+agent recommendation -> human adoption decision -> source-of-truth update
+```
+
+Use an adoption table after major experiments:
+
+| Bucket | Meaning |
+|---|---|
+| `recommended_upgrade` | Recommend promotion, pending owner confirmation |
+| `source_replay_candidate` | Replay in the source environment before adoption |
+| `paper_shadow_candidate` | Track but do not use as the active line |
+| `manual_review_candidate` | Human review aid only |
+| `diagnostic_only` | Explanation, not a rule |
+| `stop_as_rule` | Stop promoting as a rule |
+
+Do not update the active strategy map, README, or governance documents until
+the research owner confirms which recommendation is adopted. Skills should not
+store current strategy facts; update a skill only when the owner explicitly
+asks to change the research process itself. This keeps multiple experiments
+from becoming competing source-of-truth lines.

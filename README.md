@@ -14,9 +14,12 @@ strategy. It contains the research discipline around strategy work:
 - cost and cadence stress,
 - compute-scale gates before broad grids,
 - adaptive staged funnels before expensive full stress,
+- efficiency modes so lightweight checks stay lightweight,
 - standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
 - report hygiene,
+- adoption gates that separate agent recommendations from human-confirmed
+  strategy governance,
 - source replay handoff,
 - and clear separation between model evidence and manual judgment.
 
@@ -53,10 +56,49 @@ research protocol layer.
 | Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
 | Compute | Estimate replay scale; use adaptive finalist funnels before exhaustive stress |
+| Efficiency | Keep quick signal/review tasks lightweight; reserve full protocol for promotion-impacting work |
 | Run discipline | Use long-running job time to prepare expectations, failure branches, and next iterations |
 | Parallelism | Use subagents/parallel jobs only for bounded independent audit/replay/QA with resource headroom |
 | Failure | Log rejected rows and why they failed |
+| Adoption | Recommendations do not become active lines until the user confirms them |
 | Handoff | Provide a replay prompt for another environment |
+
+## Adoption Gate
+
+A research report may recommend an upgrade, but it must not silently rewrite the
+current strategy hierarchy.
+
+Use a clear post-experiment adoption table:
+
+| Bucket | Meaning |
+|---|---|
+| `recommended_upgrade` | Strong enough to recommend, pending human confirmation |
+| `source_replay_candidate` | Worth replaying in the source environment |
+| `paper_shadow_candidate` | Track, but do not use as the main line |
+| `manual_review_candidate` | Human review aid only |
+| `diagnostic_only` | Useful clue, not an executable rule |
+| `stop_as_rule` | Do not continue as a rule |
+
+Only after the user or research owner confirms which lines are adopted should
+the research map, README, or other project source-of-truth files be updated.
+Skills describe process behavior, not current strategy facts; update a skill
+only when the user explicitly asks to change the research workflow itself.
+This prevents many good-looking experiments from accumulating as competing
+"main" strategies.
+
+## Efficiency Modes
+
+Research governance should scale with task risk.
+
+| Mode | Use When | Process |
+|---|---|---|
+| `quick_monitor` | latest signal, current-holding review, one table | read the current hub and relevant latest report only |
+| `standard_check` | one hypothesis or bounded replay | fixed scope, minimal report, minimal verification |
+| `governance_patch` | memory/hub/index cleanup | edit intended governance files only |
+| `heavy_experiment` | broad search, rolling validation, promotion evidence | full protocol, staged compute funnel, adoption gate |
+
+Do not launch full TVT/rolling/cost/cadence machinery for a simple monitor
+question. Do not skip it when a result may change active research governance.
 
 ## Layout
 
