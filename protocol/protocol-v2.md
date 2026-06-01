@@ -151,7 +151,32 @@ While a long experiment is running, the agent should prepare a pre-mortem:
 If the result differs from expectation, analyze why before launching another
 run.
 
-## 11. Subagents and Parallelism
+## 11. Iteration Strength
+
+An iteration budget should count independent research attempts, not commands,
+script phases, chart generation, or report cleanup.
+
+Not an effective iteration:
+
+- bug fixes,
+- data / label / time-alignment corrections,
+- rerunning the same script after a patch,
+- adding a figure or narrow sensitivity row to the same idea,
+- renaming or re-rating report outputs.
+
+Effective iteration:
+
+- a new hypothesis,
+- a materially different factor, rule, overlay, model, or portfolio
+  construction mechanism,
+- a complete evaluation path through the agreed gates,
+- and a verdict: pass, fail, downgrade, or deepen.
+
+If the owner asks for `N` iterations or `N` failures, treat `N` as independent
+research attempts. A staged funnel for one hypothesis usually counts as one
+iteration, unless the later stage introduces a new hypothesis.
+
+## 12. Subagents and Parallelism
 
 Subagents are useful for fixed replay, label audit, report QA, and source-replay
 handoff drafts. They should not choose final promotion or invent new strategy
@@ -161,7 +186,7 @@ Parallel execution is allowed only when tasks are independent, write to separate
 outputs, and CPU/memory headroom is healthy. If memory pressure is high, prefer
 staged sequential execution.
 
-## 12. Failure Logging
+## 13. Failure Logging
 
 Every major rejected candidate should have a failure reason.
 
@@ -176,7 +201,7 @@ Examples:
 - `execution_infeasible`,
 - `data_alignment_bug`.
 
-## 13. Promotion Language
+## 14. Promotion Language
 
 Use conservative labels:
 
@@ -195,7 +220,7 @@ Avoid:
 - "safe",
 - unless the governance process explicitly supports that status.
 
-## 14. Adoption Gate
+## 15. Adoption Gate
 
 Promotion language is still only a recommendation. A report must separate:
 

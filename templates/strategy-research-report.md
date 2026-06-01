@@ -72,8 +72,20 @@
 - Failure interpretation:
 - Next iteration if failed:
 
-## 23. Final Verdict
+## 23. Iteration Accounting
 
-## 24. Do-Not-Do List
+| Counted Iteration | Hypothesis | Mechanism Changed | Evidence Checked | Verdict |
+|---:|---|---|---|---|
+| 1 | ... | ... | ... | ... |
 
-## 25. Commands Used
+Not counted as iterations:
+
+- bug fixes:
+- reruns after patches:
+- report/chart cleanup:
+
+## 24. Final Verdict
+
+## 25. Do-Not-Do List
+
+## 26. Commands Used

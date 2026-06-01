@@ -14,6 +14,8 @@ strategy. It contains the research discipline around strategy work:
 - cost and cadence stress,
 - compute-scale gates before broad grids,
 - adaptive staged funnels before expensive full stress,
+- explicit iteration-strength definitions so "N iterations" means N independent
+  research attempts, not N commands or report sections,
 - efficiency modes so lightweight checks stay lightweight,
 - standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
@@ -56,6 +58,7 @@ research protocol layer.
 | Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
 | Compute | Estimate replay scale; use adaptive finalist funnels before exhaustive stress |
+| Iteration | Count only independent hypotheses/repair mechanisms as iterations |
 | Efficiency | Keep quick signal/review tasks lightweight; reserve full protocol for promotion-impacting work |
 | Run discipline | Use long-running job time to prepare expectations, failure branches, and next iterations |
 | Parallelism | Use subagents/parallel jobs only for bounded independent audit/replay/QA with resource headroom |
