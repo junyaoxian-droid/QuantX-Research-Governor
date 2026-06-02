@@ -4,6 +4,8 @@
 
 ## 2. Goal And User Requirements
 
+Goal contract path: `docs/reports/<experiment>/GOAL.md`
+
 | User Requirement | Where Captured |
 |---|---|
 | ... | ... |
@@ -72,7 +74,9 @@
 - Failure interpretation:
 - Next iteration if failed:
 
-## 23. Iteration Accounting
+## 23. Iteration Strength And Accounting
+
+Requested iteration strength / failure budget:
 
 | Counted Iteration | Hypothesis | Mechanism Changed | Evidence Checked | Verdict |
 |---:|---|---|---|---|

@@ -104,7 +104,27 @@ At minimum, consider:
 - rolling windows,
 - and execution feasibility.
 
-## 8. Pre-Run Workflow Check
+## 8. Heavy Goal Contract
+
+For heavy, ambiguous, or promotion-impacting quant research, create a local
+`GOAL.md` before execution. The native Codex goal objective should only be a
+short pointer to that file.
+
+`GOAL.md` must include:
+
+- question-to-goal trace,
+- iteration strength / failure budget,
+- Train / Validation / Test design,
+- rolling walk-forward requirements,
+- compute funnel and full-run triggers,
+- success / partial success / failure interpretation,
+- output contract,
+- forbidden actions.
+
+If a requirement was clarified with the user but is not mapped into `GOAL.md`,
+the goal is not ready.
+
+## 9. Pre-Run Workflow Check
 
 Before a heavy experiment starts, confirm that the workflow is appropriate:
 
@@ -117,7 +137,7 @@ Before a heavy experiment starts, confirm that the workflow is appropriate:
 
 If these are unclear, do not launch a full search.
 
-## 9. Compute-Scale Gate
+## 10. Compute-Scale Gate
 
 Before launching a broad search, estimate the replay scale:
 
@@ -138,7 +158,7 @@ from consuming expensive robustness checks. Full grids are allowed only when the
 estimated runtime and memory are acceptable, or when exhaustive coverage is the
 explicit research question.
 
-## 10. Long-Run Thinking
+## 11. Long-Run Thinking
 
 While a long experiment is running, the agent should prepare a pre-mortem:
 
@@ -151,7 +171,7 @@ While a long experiment is running, the agent should prepare a pre-mortem:
 If the result differs from expectation, analyze why before launching another
 run.
 
-## 11. Iteration Strength
+## 12. Iteration Strength
 
 An iteration budget should count independent research attempts, not commands,
 script phases, chart generation, or report cleanup.
@@ -176,7 +196,7 @@ If the owner asks for `N` iterations or `N` failures, treat `N` as independent
 research attempts. A staged funnel for one hypothesis usually counts as one
 iteration, unless the later stage introduces a new hypothesis.
 
-## 12. Subagents and Parallelism
+## 13. Subagents and Parallelism
 
 Subagents are useful for fixed replay, label audit, report QA, and source-replay
 handoff drafts. They should not choose final promotion or invent new strategy
@@ -186,7 +206,7 @@ Parallel execution is allowed only when tasks are independent, write to separate
 outputs, and CPU/memory headroom is healthy. If memory pressure is high, prefer
 staged sequential execution.
 
-## 13. Failure Logging
+## 14. Failure Logging
 
 Every major rejected candidate should have a failure reason.
 
@@ -201,7 +221,7 @@ Examples:
 - `execution_infeasible`,
 - `data_alignment_bug`.
 
-## 14. Promotion Language
+## 15. Promotion Language
 
 Use conservative labels:
 
@@ -220,7 +240,7 @@ Avoid:
 - "safe",
 - unless the governance process explicitly supports that status.
 
-## 15. Adoption Gate
+## 16. Adoption Gate
 
 Promotion language is still only a recommendation. A report must separate:
 

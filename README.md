@@ -45,6 +45,23 @@ research protocol layer.
 - Not a broker integration.
 - Not a performance claim.
 
+## Heavy Goal Contract
+
+For heavy quant research goals, do not rely on a short native goal summary.
+Before execution, create a local `GOAL.md` contract that captures:
+
+- the user's answers and assumptions,
+- the exact iteration strength or failure budget,
+- Train / Validation / Test and rolling requirements,
+- compute funnel and full-run conditions,
+- success, partial-success, and stop rules,
+- output/report paths,
+- and forbidden actions.
+
+If the user asks for "5 iterations", count five independent research
+hypotheses or repair mechanisms, not five commands, charts, reruns, or report
+cleanup steps.
+
 ## Core Protocol
 
 | Layer | Requirement |
