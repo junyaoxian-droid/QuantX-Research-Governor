@@ -23,6 +23,26 @@ QuantX Research Governor 是一套面向 AI 辅助量化研究的协议和模板
 
 如果 `QuantX-GoalForge` 是通用的 Codex Goal 治理框架，那么本仓库就是量化研究专用协议层。
 
+## 分档 Checklist
+
+量化研究不应该所有任务都用同一套重流程。
+
+| 等级 | 适用场景 | 必查项 |
+|---|---|---|
+| `light` | 最新信号、持仓复盘、monitor note | 不训练、不大网格，区分模型信号和人工判断 |
+| `standard` | 单因子、单回放、单假设 | 输入、日期、TVT 是否适用、输出、禁止文件不入 Git |
+| `heavy` | rolling 验证、大搜索、source replay 候选 | `GOAL.md`、用户回答映射、计算漏斗、失败预算、采用闸门 |
+
+重型量化实验开始前必须确认：
+
+- Train / Validation / Test 角色明确；
+- Validation 选参，Test 只评估一次；
+- rolling 是固定压力测试，还是动态重训 / 动态重选；
+- 指标包含年化、DD、Sharpe、Calmar、胜率、换手率等；
+- 成本、cadence、rolling、集中度和执行压力已经声明；
+- 输出报告、handoff、failure log 已命名；
+- source replay 和采用语言保持保守。
+
 ## 重型 Goal 契约
 
 对于重型、模糊、或可能影响策略治理的量化研究，不要只依赖原生 goal 的一句短摘要。执行前应先创建本地 `GOAL.md`，记录：

@@ -137,6 +137,37 @@ Before a heavy experiment starts, confirm that the workflow is appropriate:
 
 If these are unclear, do not launch a full search.
 
+Use this checklist:
+
+```text
+Goal:
+  [ ] GOAL.md exists for heavy work.
+  [ ] Question-to-goal trace maps all user answers.
+  [ ] Iteration strength / failure budget is explicit.
+
+Research:
+  [ ] Hypothesis is stated.
+  [ ] Train / Validation / Test roles are clear.
+  [ ] Validation selects; Test evaluates once.
+  [ ] Rolling mode is named: fixed stress or true dynamic retrain/reselect.
+
+Compute:
+  [ ] Replay scale is estimated.
+  [ ] Funnel stages are justified.
+  [ ] Full Cartesian search is justified if used.
+  [ ] CPU/memory and parallelism are safe.
+
+Evidence:
+  [ ] Annualized return, DD, Sharpe, Calmar, win rate, turnover are reported where relevant.
+  [ ] Cost, cadence, rolling, concentration, and execution stress are declared.
+  [ ] Failure log categories are ready.
+
+Governance:
+  [ ] Latest signal is monitor output, not proof.
+  [ ] Adoption table is required before any active-line update.
+  [ ] Forbidden actions are listed.
+```
+
 ## 10. Compute-Scale Gate
 
 Before launching a broad search, estimate the replay scale:

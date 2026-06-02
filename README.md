@@ -16,6 +16,8 @@ strategy. It contains the research discipline around strategy work:
 - adaptive staged funnels before expensive full stress,
 - explicit iteration-strength definitions so "N iterations" means N independent
   research attempts, not N commands or report sections,
+- tiered research checklists so quick reviews stay light while heavy experiments
+  cannot start without a `GOAL.md`, compute gate, and adoption gate,
 - efficiency modes so lightweight checks stay lightweight,
 - standard metrics such as Sharpe, Calmar, max drawdown, and win rate,
 - failure logs,
@@ -75,6 +77,7 @@ cleanup steps.
 | Metrics | Report annualized return, DD, Sharpe, Calmar, win rate, turnover |
 | Stress | Include cost, cadence, and perturbation checks |
 | Compute | Estimate replay scale; use adaptive finalist funnels before exhaustive stress |
+| Checklist | Use light / standard / heavy checklists according to task risk |
 | Iteration | Count only independent hypotheses/repair mechanisms as iterations |
 | Efficiency | Keep quick signal/review tasks lightweight; reserve full protocol for promotion-impacting work |
 | Run discipline | Use long-running job time to prepare expectations, failure branches, and next iterations |
@@ -119,6 +122,26 @@ Research governance should scale with task risk.
 
 Do not launch full TVT/rolling/cost/cadence machinery for a simple monitor
 question. Do not skip it when a result may change active research governance.
+
+## Checklist Levels
+
+Use the smallest checklist that protects the research.
+
+| Level | Use When | Required Checks |
+|---|---|---|
+| `light` | latest signal, holding review, monitor note | no training; no broad grid; separate model signal from manual judgment |
+| `standard` | one factor, one replay, one bounded hypothesis | inputs, date range, TVT applicability, outputs, no forbidden files staged |
+| `heavy` | rolling validation, broad search, source-replay candidate | `GOAL.md`, question-to-goal trace, compute funnel, failure budget, adoption gate |
+
+Heavy quant experiments should not start until:
+
+- Train / Validation / Test roles are explicit;
+- Validation selects and Test evaluates once;
+- rolling is specified as fixed rolling stress or true dynamic retraining;
+- standard metrics include annualized return, DD, Sharpe, Calmar, win rate, and turnover where relevant;
+- cost / cadence / rolling / concentration checks are declared;
+- output reports, handoff, and failure logs are named;
+- source replay and adoption language stay conservative.
 
 ## Layout
 
