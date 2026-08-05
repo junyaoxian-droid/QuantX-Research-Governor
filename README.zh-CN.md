@@ -1,127 +1,88 @@
 # QuantX Research Governor 中文说明
 
-QuantX Research Governor 是一套面向 AI 辅助量化研究的协议和模板库。
+这是私有量化研究工作区所用「研究治理 skill」的可移植副本，附带配套的可复用
+协议、模板与脱敏范例。
 
-它不是策略仓库，不包含真实信号、真实持仓、私有数据或收益承诺。  
-它关注的是量化研究本身如何更规范：
+本仓库是**下游**。`SKILL.md` 及其 references 的权威归属方是私有工作区
+`QuantX-Mac-Research`；这里是可以安装到别处、或在没有工作区权限时阅读的版本。
+修改先在上游做，再同步过来。
 
-- 先提出市场假设；
-- 再做因子/标签验证；
-- Train / Validation / Test 分离；
-- Validation 选参，Test 只评估；
-- 对时间序列策略加入 rolling walk-forward，滚动窗口验证；
-- 加入成本压力和 cadence 压力；
-- 在大网格前先做 compute-scale gate，估算计算规模，再选择全量、分阶段或多阶段漏斗；
-- 增加 efficiency modes，让简单查询保持轻量，大型实验才完整治理；
-- 重实验运行期间不空等，要提前写出预期结果、失败分支、下一轮迭代方向；
-- subagent 和并行只用于独立审计、固定回放、报告 QA 或 handoff，不让它们决定最终升级；
-- 输出 Sharpe、Calmar、胜率、最大回撤、换手率等标准指标；
-- 记录失败候选；
-- 增加 adoption gate，把 agent 建议和用户确认采用分开；
-- 重要结果交给另一个环境 source replay；
-- 把人工判断与模型证据分开。
+仓库不含策略逻辑、信号、持仓、数据集或收益承诺。不构成投资建议，也不是交易系统。
 
-如果 `QuantX-GoalForge` 是通用的 Codex Goal 治理框架，那么本仓库就是量化研究专用协议层。
+## 它解决什么问题
 
-## 分档 Checklist
-
-量化研究不应该所有任务都用同一套重流程。
-
-| 等级 | 适用场景 | 必查项 |
-|---|---|---|
-| `light` | 最新信号、持仓复盘、monitor note | 不训练、不大网格，区分模型信号和人工判断 |
-| `standard` | 单因子、单回放、单假设 | 输入、日期、TVT 是否适用、输出、禁止文件不入 Git |
-| `heavy` | rolling 验证、大搜索、source replay 候选 | `GOAL.md`、用户回答映射、计算漏斗、失败预算、采用闸门 |
-
-重型量化实验开始前必须确认：
-
-- Train / Validation / Test 角色明确；
-- Validation 选参，Test 只评估一次；
-- rolling 是固定压力测试，还是动态重训 / 动态重选；
-- 指标包含年化、DD、Sharpe、Calmar、胜率、换手率等；
-- 成本、cadence、rolling、集中度和执行压力已经声明；
-- 输出报告、handoff、failure log 已命名；
-- source replay 和采用语言保持保守。
-
-## 重型 Goal 契约
-
-对于重型、模糊、或可能影响策略治理的量化研究，不要只依赖原生 goal 的一句短摘要。执行前应先创建本地 `GOAL.md`，记录：
-
-- 用户回答与假设；
-- 明确的迭代强度或失败预算；
-- Train / Validation / Test 与 rolling 要求；
-- 计算漏斗和进入 full-run 的条件；
-- 成功、部分成功、失败和停止规则；
-- 输出路径；
-- 禁止事项。
-
-如果用户说“迭代 5 次”，应理解为 5 个独立研究假设或修复机制，而不是 5 条命令、5 张图、5 次重跑或 5 个报告小节。
-
-## 计算规模闸门
-
-严格研究不等于无脑全量。大型回放或压力测试开始前，应先估算：
+Agent 做研究会漂移：中途扩大范围、悄悄复用测试集、汇报最好的那个窗口而不是当初
+选中的那个、失败记录丢失。这个 skill 就是针对这些的刹车：
 
 ```text
-replay units = candidates * cadences * costs * overlays * rolling windows
+执行前先固定 scope、预算和停止条件
+Train / Validation / Test 分离，Test 只开一次
+选择顺序事后不可重排
+cadence、成本、rolling 压力测试是默认项而非附加项
+大网格前先过 compute-scale gate
+定义 iteration strength，让「N 轮迭代」指 N 次独立研究尝试，
+  而不是 N 条命令或 N 个报告小节
+失败记录是一等输出
+recommendation 与 adoption 严格分离
 ```
 
-如果规模过大，优先采用分阶段漏斗：先用主执行口径和基准成本筛出候选，
-再对真正有价值的候选逐步增加 cadence、cost、industry、execution、rolling
-等压力测试。阶段数不是固定的；小实验可以直接全量，大实验可以两阶段或多阶段。
+最后一条最关键：agent 可以建议升级，但必须由人确认后才成为当前工作主线。
 
-这不是降低严谨性，而是避免把已经失败的候选送进所有昂贵压力测试。
+## 目录结构
 
-## 效率模式
+```text
+skills/quantx-research-governor/   skill 本体
+  SKILL.md                         入口：路由、生命周期、安全边界
+  references/                      按需加载，不一次全读
+    goal_templates.md              目标 intake、plan-to-GOAL 桥接、迭代账本
+    research_protocol.md           选择顺序、test ledger、placebo、压力测试
+    report_contract.md             报告结构与输出文件契约
+    runtime_and_resources.md       算力闸门、重跑启动、中断恢复
+    subagent_policy.md             委派边界、独立复核
+    governance_and_closeout.md     git 收尾、镜像仓库治理
+    golden_path_fixture.md         端到端生命周期骨架
+  assets/golden_path_fixture/      完整走通的生命周期样例，数据为占位符
+  scripts/validate_golden_path.py  fixture 校验脚本
 
-研究治理要和任务风险匹配。
+protocol/data-leakage-checklist.md        信任回测前的审查清单，含 A 股特有项
+templates/strategy-research-report.md     策略设计规格模板
+templates/research-index.md               组合层面的研究索引模板
+templates/source-replay-handoff.md        独立复算交接模板
+examples/sanitized-experiment-readout.md  完整 readout 范例，数字为杜撰
+docs/case-study.md                        私有工作区的经验复盘
+```
 
-| 模式 | 适用场景 | 处理方式 |
-|---|---|---|
-| `quick_monitor` | 最新信号、持仓复盘、一张表 | 只读当前 Hub 和相关最新报告 |
-| `standard_check` | 单个假设或小回放 | 固定范围、轻量报告、最小验证 |
-| `governance_patch` | 记忆、Hub、索引清理 | 只改目标治理文件 |
-| `heavy_experiment` | 大搜索、滚动验证、升级证据 | 完整协议、分阶段计算漏斗、升级采用闸门 |
+## 安装
 
-简单 monitor 不需要完整 TVT/rolling/cost/cadence 流程；但可能改变主线的实验不能跳过这些流程。
+见 [INSTALL.md](INSTALL.md)。简版：把 `skills/quantx-research-governor/` 复制到
+你的 agent skills 目录，然后把 `SKILL.md` 里的 canonical source 表改成指向你自己
+仓库的真值文件。
 
-## 升级采用闸门
+## 适配注意
 
-研究报告可以给出“建议升级”，但不能自动改写当前策略层级。每次重要实验后，
-先输出 adoption table：
+`SKILL.md` 是按文件名做路由的——`STATE.md`、`CURRENT_SHELL_REGISTRY.md`、
+`TEST_ACCESS_LEDGER.md` 等等。这些名字属于某一个特定工作区。**可复用的是路由纪律
+本身，不是这些文件名**。使用前请替换成你自己的，否则 agent 会去找根本不存在的文件。
 
-| 分类 | 含义 |
-|---|---|
-| `recommended_upgrade` | 证据足够强，建议升级，但等待人工确认 |
-| `source_replay_candidate` | 值得在源环境复现 |
-| `paper_shadow_candidate` | 值得跟踪，不作为主线 |
-| `manual_review_candidate` | 只辅助人工复核 |
-| `diagnostic_only` | 有解释力，不可执行 |
-| `stop_as_rule` | 停止作为规则推进 |
+`references/report_contract.md` 同理，它规定的输出文件包假设了特定的目录布局。
 
-只有研究负责人确认哪些实验线升级、保留或淘汰后，才更新研究地图、README
-或其他项目 source-of-truth 文件。skill 描述的是流程行为，不保存当前策略事实；
-只有用户明确要求调整研究流程时才修改 skill。这样可以避免每轮实验后出现一堆
-互相竞争的“主线”。
+## 适用对象
 
-## 不包含什么？
+独立量化研究者、AI 辅助研究流程、需要报告纪律的高频回测者，以及希望在相信一个结果
+之前先做可复现 source replay 的人。
 
-- 不包含投资建议；
-- 不包含交易策略；
-- 不包含自动交易；
-- 不包含真实账户信息；
-- 不包含每日信号；
-- 不包含私有数据。
+## 它不是什么
 
-## 适合谁？
+不是投资建议。不是交易策略。不是信号服务。不是回测引擎。
 
-- 独立量化研究者；
-- 用 Codex / LLM 做回测和实验的人；
-- 需要管理大量实验报告的人；
-- 想减少未来函数、过拟合、OOS 诱惑的人；
-- 需要 Windows/Mac 或多环境复现的人。
+## 沿革
 
-## 社区共建
+`QuantX-GoalForge` 已于 2026-08-05 归档并并入本仓库。它的 goal governance 文档、
+prompt 模板和两个 `goal-governor` skill 均被 `references/goal_templates.md` 覆盖
+（后者是严格超集）。唯一值得保留的案例复盘，现为 `docs/case-study.md`。
+`protocol/protocol-v2.md` 同样被 `references/research_protocol.md` 取代并删除。
+两个仓库的完整历史已保存为本地 git bundle。
 
-欢迎量化研究者、Codex 用户、回测工程师、数据科学实践者一起贡献想法。
+## License
 
-有价值的贡献包括：更好的验证清单、滚动窗口模板、未来函数审计案例、source replay 流程、指标定义、脱敏失败案例等。这个仓库的目标不是追求更漂亮的回测，而是让量化研究协议更可靠、更容易复核、更方便其他人接手。
+MIT，见 [LICENSE](LICENSE)。

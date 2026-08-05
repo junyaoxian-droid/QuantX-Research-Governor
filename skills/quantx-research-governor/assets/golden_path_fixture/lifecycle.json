@@ -1,0 +1,87 @@
+{
+  "fixture_id": "quantx_governor_golden_path_v1",
+  "fixture_version": 1,
+  "fixture_scope": "synthetic_governance_only",
+  "private_strategy_facts": false,
+  "native_goal_created": false,
+  "canonical_test_ledger": "00_RESEARCH_HUB/TEST_ACCESS_LEDGER.md",
+  "artifacts": {
+    "intake": "INTAKE.md",
+    "goal": "GOAL.md",
+    "iteration_ledger": "ITERATION_LEDGER.md",
+    "test_access_entry": "TEST_ACCESS_ENTRY.md",
+    "independent_review": "INDEPENDENT_REVIEW.md",
+    "closeout": "CLOSEOUT.md"
+  },
+  "stages": [
+    {
+      "stage": "intake",
+      "status": "complete",
+      "route": "heavy_experiment",
+      "lane": "synthetic_new_baseline",
+      "promotion_affecting": true,
+      "scope_frozen": true
+    },
+    {
+      "stage": "goal_contract",
+      "status": "complete",
+      "goal_path": "GOAL.md",
+      "iteration_ledger_path": "ITERATION_LEDGER.md",
+      "question_to_goal_trace": "complete",
+      "authorization_state": "fixture_simulated_confirmed",
+      "native_goal_action": "not_created_fixture_only"
+    },
+    {
+      "stage": "candidate_freeze",
+      "status": "complete",
+      "candidate_id": "synthetic_candidate_a",
+      "candidate_frozen": true,
+      "frozen_before_test": true,
+      "matched_placebo_predeclared": true,
+      "search_breadth_disclosed": true,
+      "selection_deflation_recorded": true
+    },
+    {
+      "stage": "test_access",
+      "status": "complete",
+      "candidate_id": "synthetic_candidate_a",
+      "access_seq": 1,
+      "access_mode": "first_blind",
+      "canonical_ledger_path": "00_RESEARCH_HUB/TEST_ACCESS_LEDGER.md",
+      "ledger_recorded": true,
+      "used_for_selection": false
+    },
+    {
+      "stage": "independent_review",
+      "status": "complete",
+      "candidate_id": "synthetic_candidate_a",
+      "reviewer_relation": "independent",
+      "scope_changed": false,
+      "verdict": "confirmed",
+      "confirmation_level": "independent_analysis",
+      "adoption_ready": true
+    },
+    {
+      "stage": "recommendation",
+      "status": "complete",
+      "candidate_id": "synthetic_candidate_a",
+      "bucket": "recommended_upgrade",
+      "user_decision_required": true,
+      "adopted": false
+    },
+    {
+      "stage": "closeout",
+      "status": "complete",
+      "completion_audit": "satisfied",
+      "still_open": [],
+      "checks": {
+        "fixture_validator": true,
+        "relevant_tests": true,
+        "git_diff_check": true,
+        "workspace_closeout": true
+      },
+      "exact_paths_only": true,
+      "push_decision": "separate_scope_check"
+    }
+  ]
+}
