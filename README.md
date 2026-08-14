@@ -22,6 +22,8 @@ what failed. The skill in this repo is a set of brakes for that:
 
 ```text
 scope, budget, and stop rules fixed before execution
+contract weight based on consequence, with instrument feasibility first
+semantic pre-freeze review for reachable gates and exclusive terminals
 Train / Validation / Test with a one-shot Test opening
 a selection order that cannot be reordered after the fact
 cadence, cost, and rolling stress as defaults rather than extras
@@ -29,6 +31,9 @@ compute-scale gates before broad grids
 iteration strength defined so "N iterations" means N research attempts,
   not N commands or N report sections
 failure logging as a first-class output
+contract-runner conformance before formal outputs are trusted
+searcher, drafter, builder, and reviewer identities recorded separately
+immutable no-overwrite publication for durable generations
 recommendation and adoption kept strictly separate
 ```
 
@@ -42,6 +47,7 @@ skills/quantx-research-governor/   the skill itself
   SKILL.md                         entry point: routing, lifecycle, safety
   references/                      loaded conditionally, not all at once
     goal_templates.md              goal intake, plan-to-GOAL bridge, ledgers
+    contract_design.md             feasibility, gate semantics, conformance
     research_protocol.md           selection order, test ledger, placebo, stress
     report_contract.md             report sections and output file contract
     runtime_and_resources.md       compute gate, heavy-run launch, resume
@@ -52,6 +58,8 @@ skills/quantx-research-governor/   the skill itself
   scripts/validate_golden_path.py  fixture validator
 
 protocol/data-leakage-checklist.md        pre-trust audit, A-share aware
+docs/workspace-governance.md              portable repository and evidence layout
+templates/experiment-contract.md          frozen contract and preflight template
 templates/strategy-research-report.md     strategy design spec
 templates/research-index.md               portfolio-level research index
 templates/source-replay-handoff.md        independent replay handoff
@@ -76,6 +84,11 @@ send the agent looking for files you do not have.
 
 The same applies to `references/report_contract.md`, which names an output file
 pack that assumes a particular directory layout.
+
+For a complete example, start with
+[`templates/experiment-contract.md`](templates/experiment-contract.md), then
+run the synthetic lifecycle validator described in
+[`references/golden_path_fixture.md`](skills/quantx-research-governor/references/golden_path_fixture.md).
 
 ## Who This Is For
 

@@ -51,6 +51,11 @@ missing files is worse than one that says less.
 Do the same for `references/report_contract.md`, which assumes an output layout
 of `docs/reports/<experiment>_vN/` and an ignored `outputs/<experiment>_vN/`.
 
+Read `references/contract_design.md` and adapt
+`templates/experiment-contract.md` before the first formal experiment. In
+particular, map the generic Test ledger, canonical governance owners, artifact
+paths, and review-role identifiers to your repository.
+
 ## Verify
 
 The bundled fixture is an end-to-end lifecycle you can validate:
@@ -60,7 +65,7 @@ python skills/quantx-research-governor/scripts/validate_golden_path.py
 ```
 
 It defaults to the bundled `assets/golden_path_fixture/lifecycle.json` and
-prints `golden-path fixture passed: quantx_governor_golden_path_v1`. Pass a
+prints `golden-path fixture passed: quantx_governor_golden_path_v2`. Pass a
 different `lifecycle.json` path as the one positional argument to validate your
 own.
 
@@ -74,6 +79,7 @@ Worth changing for your own project:
 - evaluation gates and standard metrics,
 - failure budget and stop rules,
 - the report contract's section list and output file pack.
+- the workspace ownership map described in `docs/workspace-governance.md`.
 
 The parts worth keeping as-is: the selection order, the one-shot Test rule, the
 test access ledger, and the separation between recommendation and adoption.

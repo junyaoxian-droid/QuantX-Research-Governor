@@ -12,6 +12,8 @@ Agent 做研究会漂移：中途扩大范围、悄悄复用测试集、汇报�
 
 ```text
 执行前先固定 scope、预算和停止条件
+按结果可能造成的后果决定合同重量，先确认 instrument feasibility
+冻结前语义复核 gate 是否可失败、terminal 是否互斥
 Train / Validation / Test 分离，Test 只开一次
 选择顺序事后不可重排
 cadence、成本、rolling 压力测试是默认项而非附加项
@@ -19,6 +21,9 @@ cadence、成本、rolling 压力测试是默认项而非附加项
 定义 iteration strength，让「N 轮迭代」指 N 次独立研究尝试，
   而不是 N 条命令或 N 个报告小节
 失败记录是一等输出
+正式运行前完成 contract-runner conformance
+分别记录 searcher、drafter、builder 与 reviewer 身份
+正式产物使用 immutable、no-overwrite 发布
 recommendation 与 adoption 严格分离
 ```
 
@@ -31,6 +36,7 @@ skills/quantx-research-governor/   skill 本体
   SKILL.md                         入口：路由、生命周期、安全边界
   references/                      按需加载，不一次全读
     goal_templates.md              目标 intake、plan-to-GOAL 桥接、迭代账本
+    contract_design.md             仪器可行性、门语义与 runner 一致性
     research_protocol.md           选择顺序、test ledger、placebo、压力测试
     report_contract.md             报告结构与输出文件契约
     runtime_and_resources.md       算力闸门、重跑启动、中断恢复
@@ -41,6 +47,8 @@ skills/quantx-research-governor/   skill 本体
   scripts/validate_golden_path.py  fixture 校验脚本
 
 protocol/data-leakage-checklist.md        信任回测前的审查清单，含 A 股特有项
+docs/workspace-governance.md              可移植的仓库与证据治理
+templates/experiment-contract.md          冻结实验合同与 preflight 模板
 templates/strategy-research-report.md     策略设计规格模板
 templates/research-index.md               组合层面的研究索引模板
 templates/source-replay-handoff.md        独立复算交接模板
@@ -61,6 +69,11 @@ docs/case-study.md                        私有工作区的经验复盘
 本身，不是这些文件名**。使用前请替换成你自己的，否则 agent 会去找根本不存在的文件。
 
 `references/report_contract.md` 同理，它规定的输出文件包假设了特定的目录布局。
+
+完整使用路径可以从 [`templates/experiment-contract.md`](templates/experiment-contract.md)
+开始，再按
+[`references/golden_path_fixture.md`](skills/quantx-research-governor/references/golden_path_fixture.md)
+运行 synthetic lifecycle validator。
 
 ## 适用对象
 
