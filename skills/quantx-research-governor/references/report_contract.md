@@ -55,6 +55,8 @@ Use only what fits the experiment:
 ```text
 REPORT.md
 commands_used.md
+experiment_contract.json or GOAL.md when contract-backed
+CONTRACT_PREFLIGHT.md or preformal_checklist.json when formal
 REPRODUCTION_HANDOFF_PROMPT.md
 summary_metrics.csv
 train_validation_test_summary.csv
@@ -64,6 +66,7 @@ practical_account_replay_summary.csv
 failed_candidates.csv
 latest_signal_monitor.csv
 contract_runner_conformance.json
+independent_review.md
 review_history.jsonl
 ```
 

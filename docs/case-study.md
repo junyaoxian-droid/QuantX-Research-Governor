@@ -39,6 +39,9 @@ The workspace became a useful stress test for Codex because it had:
 | Agent over-persistence | A broad search could continue after weak evidence instead of pausing for hypothesis review | Time was spent tuning noise |
 | Agent under-persistence | A promising line could be abandoned after one failed run | Useful ideas were not developed deeply enough |
 | Cross-machine mismatch | Mac and Windows research environments needed to reproduce each other | Local-only conclusions could become misleading |
+| Specification passed mechanical gates | Hashes and assertions matched a frozen contract whose gate did not answer the intended question | Clean artifacts could still support a false claim |
+| Review-role entanglement | Builder, contract drafter, searcher, and reviewer were treated as one coarse identity | A review could be labeled independent when it was not |
+| Partial publication | A run could expose a current pointer before every artifact was complete | Reviewers could inspect a mixed or incomplete generation |
 
 ## Governance Patterns That Helped
 
@@ -58,6 +61,10 @@ The workspace became a useful stress test for Codex because it had:
 | Monitor-only layer | News, manual tape-reading, and post-sample observations were separated from historical training | Reduced contamination |
 | Lightweight GitHub sync | Only scripts, reports, and small summaries were pushed; full outputs and data stayed local | Enabled review without leaking large/private artifacts |
 | Windows/source replay | A second environment replayed important findings | Reduced single-machine error |
+| Instrument-first contract preflight | Resolution, sample supply, gate reachability, and terminal logic were checked before freeze | Prevented expensive contracts for questions the data could not answer |
+| Contract-runner conformance | Every frozen clause was mapped to code, fixtures, and evidence | Exposed implementation drift without claiming semantic correctness |
+| Explicit review relations | Searcher, drafter, builder, and reviewer identities were recorded separately | Made self-review truthful and promotion gates fail closed |
+| Immutable generation publication | Staging, manifest verification, atomic rename, and last-pointer update replaced overwrite-in-place | Made partial and silent reruns visible |
 
 ## Before / After
 
@@ -140,6 +147,15 @@ Use labels like:
 - `monitor_only`,
 - `post_sample`,
 - `not_training_feature`.
+
+### 6. Mechanical Correctness Is Not Semantic Correctness
+
+A runner can match a frozen contract perfectly while the contract measures the
+wrong thing. Before freeze, ask what observation makes each gate fail, whether
+terminal labels are mutually exclusive, and whether the available data can
+resolve the claimed effect. After freeze, use a separate conformance receipt to
+prove that the runner implements those clauses. Neither review replaces the
+other.
 
 ## What Did This Improve?
 

@@ -78,6 +78,7 @@ references.
 | Situation | Required reference |
 |---|---|
 | Large goal, Plan-to-GOAL, native goal, iteration/completion rules | `references/goal_templates.md` |
+| Frozen or promotion-affecting contract, gate semantics, runner conformance | `references/contract_design.md` |
 | TVT, cadence, cost, versioning, failure handling | `references/research_protocol.md` |
 | Heavy compute, memory, guard, heartbeat, resume | `references/runtime_and_resources.md` |
 | Report structure and lightweight output pack | `references/report_contract.md` |
@@ -154,7 +155,7 @@ Keep model portfolio, manual overlay, and real execution facts separate.
 
 ### Heavy Experiment
 
-1. Read `goal_templates.md`, `research_protocol.md`, and
+1. Read `goal_templates.md`, `contract_design.md`, `research_protocol.md`, and
    `runtime_and_resources.md`.
 2. Calibrate success, stop rules, iteration budget, replay, resources, helper
    permission, and commit/push policy.
@@ -271,6 +272,9 @@ candidates * variants * cadences * costs * windows
 - Before formal, map every contract requirement to runner evidence and fixtures,
   and prove the frozen gate conjunction is reachable at the expected source
   supply. Do not inherit another experiment's frequency or cash constants.
+- Pin shared contract clauses to a retrievable content identity, not a checksum
+  that can only detect change. Publish a contract-runner conformance receipt
+  before trusting formal outputs.
 - Do not run a full Cartesian grid by default.
 - Run heavy or longer-than-about-15-minute Python commands through
   `code/scripts/quantx_heavy_run_guard_v1.py` after reading

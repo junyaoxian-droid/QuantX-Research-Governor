@@ -15,6 +15,7 @@ DEFAULT_FIXTURE = SKILL_DIR / "assets/golden_path_fixture/lifecycle.json"
 STAGE_ORDER = (
     "intake",
     "goal_contract",
+    "contract_preflight",
     "candidate_freeze",
     "test_access",
     "independent_review",
@@ -25,6 +26,7 @@ REQUIRED_ARTIFACTS = {
     "intake": ("INTAKE.md", "synthetic_governance_only"),
     "goal": ("GOAL.md", "Question-To-GOAL Trace"),
     "iteration_ledger": ("ITERATION_LEDGER.md", "Iteration counted?"),
+    "contract_preflight": ("CONTRACT_PREFLIGHT.md", "Instrument feasible"),
     "test_access_entry": ("TEST_ACCESS_ENTRY.md", "first_blind"),
     "independent_review": ("INDEPENDENT_REVIEW.md", "independent_analysis"),
     "closeout": ("CLOSEOUT.md", "still_open"),
@@ -108,6 +110,22 @@ def validate_fixture(
     ):
         errors.append("goal contract must link GOAL.md and ITERATION_LEDGER.md")
 
+    preflight = stages["contract_preflight"]
+    for field in (
+        "instrument_feasible",
+        "gate_failure_reachable",
+        "gate_classes_assigned",
+        "terminal_labels_exclusive",
+        "matched_controls_predeclared",
+        "null_choice_justified",
+        "record_schema_truthful",
+        "shared_clauses_retrievable",
+    ):
+        if preflight.get(field) is not True:
+            errors.append(f"contract preflight missing semantic control: {field}")
+    if preflight.get("contract_runner_conformance") != "pass":
+        errors.append("contract-runner conformance must pass before candidate freeze")
+
     freeze = stages["candidate_freeze"]
     if (
         freeze.get("candidate_frozen") is not True
@@ -145,14 +163,37 @@ def validate_fixture(
     review = stages["independent_review"]
     if review.get("candidate_id") != freeze.get("candidate_id"):
         errors.append("review candidate must match frozen candidate")
+    role_fields = (
+        "builder_task_id",
+        "contract_drafter_task_id",
+        "searcher_task_id",
+        "reviewer_task_id",
+    )
+    roles_present = all(
+        isinstance(review.get(field), str) and review[field].strip()
+        for field in role_fields
+    )
+    if not roles_present:
+        errors.append("independent review must record non-empty task identities")
     independent = (
-        review.get("reviewer_relation") == "independent"
+        roles_present
+        and review.get("builder_task_id") != review.get("reviewer_task_id")
+        and review.get("reviewer_relation") == "independent"
+        and review.get("reviewer_task_id")
+        not in {
+            review.get("contract_drafter_task_id"),
+            review.get("searcher_task_id"),
+        }
         and review.get("scope_changed") is False
         and review.get("confirmation_level")
         in {"independent_analysis", "independent_reproduction"}
     )
     if not independent:
         errors.append("promotion review must be independent with no scope changes")
+    if review.get("headline_recomputed_from_source") is not True:
+        errors.append("postformal review must recompute a headline from source")
+    if review.get("governance_eligible") is not True:
+        errors.append("golden-path independent review must be governance eligible")
     if review.get("adoption_ready") is True and not independent:
         errors.append("self review cannot mark adoption_ready")
     if review.get("verdict") != "confirmed":

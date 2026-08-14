@@ -1,6 +1,6 @@
 {
-  "fixture_id": "quantx_governor_golden_path_v1",
-  "fixture_version": 1,
+  "fixture_id": "quantx_governor_golden_path_v2",
+  "fixture_version": 2,
   "fixture_scope": "synthetic_governance_only",
   "private_strategy_facts": false,
   "native_goal_created": false,
@@ -9,6 +9,7 @@
     "intake": "INTAKE.md",
     "goal": "GOAL.md",
     "iteration_ledger": "ITERATION_LEDGER.md",
+    "contract_preflight": "CONTRACT_PREFLIGHT.md",
     "test_access_entry": "TEST_ACCESS_ENTRY.md",
     "independent_review": "INDEPENDENT_REVIEW.md",
     "closeout": "CLOSEOUT.md"
@@ -30,6 +31,19 @@
       "question_to_goal_trace": "complete",
       "authorization_state": "fixture_simulated_confirmed",
       "native_goal_action": "not_created_fixture_only"
+    },
+    {
+      "stage": "contract_preflight",
+      "status": "complete",
+      "instrument_feasible": true,
+      "gate_failure_reachable": true,
+      "gate_classes_assigned": true,
+      "terminal_labels_exclusive": true,
+      "matched_controls_predeclared": true,
+      "null_choice_justified": true,
+      "record_schema_truthful": true,
+      "shared_clauses_retrievable": true,
+      "contract_runner_conformance": "pass"
     },
     {
       "stage": "candidate_freeze",
@@ -55,11 +69,17 @@
       "stage": "independent_review",
       "status": "complete",
       "candidate_id": "synthetic_candidate_a",
+      "builder_task_id": "fixture_builder",
+      "contract_drafter_task_id": "fixture_drafter",
+      "searcher_task_id": "fixture_searcher",
+      "reviewer_task_id": "fixture_reviewer",
       "reviewer_relation": "independent",
       "scope_changed": false,
       "verdict": "confirmed",
       "confirmation_level": "independent_analysis",
-      "adoption_ready": true
+      "headline_recomputed_from_source": true,
+      "adoption_ready": true,
+      "governance_eligible": true
     },
     {
       "stage": "recommendation",

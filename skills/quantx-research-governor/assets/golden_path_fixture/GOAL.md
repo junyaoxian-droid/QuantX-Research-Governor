@@ -27,6 +27,7 @@ compute or private strategy facts.
 
 - `GOAL.md`
 - `ITERATION_LEDGER.md`
+- `CONTRACT_PREFLIGHT.md`
 - `TEST_ACCESS_ENTRY.md`
 - `INDEPENDENT_REVIEW.md`
 - `CLOSEOUT.md`

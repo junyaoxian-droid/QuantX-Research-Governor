@@ -16,9 +16,11 @@ Reproduce the selected candidate under the source-of-truth environment.
 ## Read First
 
 - `REPORT.md`
-- `summary.csv`
-- `failure_log.csv`
-- script path
+- frozen experiment contract and shared-clause identity
+- `contract_runner_conformance.json`
+- `summary_metrics.csv`
+- `failed_candidates.csv` or the experiment's failure log
+- immutable generation path and runner hash
 
 ## Candidate To Replay
 
@@ -29,6 +31,14 @@ Reproduce the selected candidate under the source-of-truth environment.
 | Data range | |
 | Cost assumptions | |
 | Execution assumptions | |
+| Contract identity | |
+| Shared-clause identity | |
+| Input identities | |
+| Runner identity | |
+| Original builder | |
+| Contract drafter | |
+| Searcher, if applicable | |
+| Assigned reviewer | |
 
 ## Required Checks
 
@@ -37,7 +47,9 @@ Reproduce the selected candidate under the source-of-truth environment.
 3. Reproduce cadence stress.
 4. Confirm no Test selection.
 5. Confirm no private data dependency.
-6. Report mismatches.
+6. Recompute at least one headline from source inputs; vary the seed when
+   sampling is involved.
+7. Preserve adverse findings and report mismatches.
 
 ## Output
 
