@@ -1,13 +1,23 @@
 # QuantX Report Contract
 
+## Contents
+
+- Stage-appropriate summary
+- Conditional report sections
+- Output files and conformance
+- Table style
+
 ## User-Facing Summary
 
 Prefer compact tables, written in the user's input language.
 
-Minimum final table for strategy experiments:
+Use a result table appropriate to the authorized research stage. For example:
 
 | Line | Candidate | Train | Validation | Test | Cadence | DD | Verdict |
 |---|---|---:|---:|---:|---|---:|---|
+
+Omit inapplicable columns or mark unopened splits `not_opened`. A report
+template never authorizes opening Validation, Test, or blind/post-sample data.
 
 Explain:
 
@@ -21,7 +31,16 @@ what should not be used for trading
 
 ## Markdown Report Sections
 
-For `docs/reports/<experiment>_vN/REPORT.md`:
+For `docs/reports/<experiment>_vN/REPORT.md`, select sections by stage:
+
+| Stage | Required focus | Conditional evidence |
+|---|---|---|
+| Outcome-free feasibility / Train-only scout | question, permitted inputs, diagnostic result, limitations, next gate | held-out splits remain `not_opened` |
+| Formal research | frozen scope, authorized split results, gate verdict, failure cases | cadence, cost, robustness as specified in the contract |
+| Execution-relevant research | the above plus practical replay assumptions and evidence | current monitoring only when separately authorized and meaningful |
+| Governance-only | changes, reasons, validation, remaining divergence | no strategy metrics or signal generation |
+
+The following is a menu for a full report, not a mandatory outline:
 
 ```text
 # <Experiment Name>
@@ -29,15 +48,19 @@ For `docs/reports/<experiment>_vN/REPORT.md`:
 ## 1. Executive Verdict
 ## 2. Hypothesis And Scope
 ## 3. Data / Label / Execution Assumptions
-## 4. Train / Validation / Test Results
+## 4. Authorized Split Results
 ## 5. Cadence Stress
 ## 6. Cost And Execution Stress
 ## 7. Practical Account Replay
 ## 8. Failure Cases
-## 9. Latest Monitor Signal
+## 9. Monitoring Evidence (only if in scope)
 ## 10. Decision And Next Step
 ## 11. Do-Not-Do
 ```
+
+Do not generate a latest signal merely to fill a section. Read the registry
+first; no adopted current core means no current strategy signal. Historical
+replay and candidate monitoring must retain their explicit non-adopted labels.
 
 For governance-only reports, use:
 

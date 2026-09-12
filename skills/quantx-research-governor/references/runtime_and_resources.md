@@ -49,9 +49,10 @@ factor or label gate
 -> reproduction / source replay
 ```
 
-Do not run the full Cartesian product by default. Pick one native cadence and
-one cost point as the primary selection funnel, then apply the remaining
-cadences and cost stress to finalists only.
+Do not run the full Cartesian product by default. Use the primary cadence and
+cost fixed by the current experiment contract for selection, then apply the
+declared additional stress to finalists. Do not inherit another strategy's
+selection constants.
 
 ## Heavy-Run Launch Gate
 
@@ -65,7 +66,7 @@ Launch heavy commands through:
   --chunking-plan "<score_id / hypothesis / date-window / none + why>" \
   --materialization-plan "<fully loaded vs streamed/projected>" \
   --stop-authorization not-approved \
-  -- .venv/bin/python code/scripts/<experiment>.py <args>
+  -- .venv/bin/python code/scripts/experiments/<experiment_id>/run.py <args>
 ```
 
 For estimated peak RSS of 30 GB or more, require `--allow-high-memory` plus a

@@ -2,6 +2,10 @@
 
 Use subagents only when they reduce risk or wall time.
 
+Default bounded helpers to `medium` reasoning effort; honor an explicit user
+override. Give a fresh helper the minimum context for its fixed task. A helper
+is not a separate user-owned Codex task.
+
 ## Allowed
 
 ```text
@@ -45,7 +49,7 @@ Give the reviewer a frozen packet:
 
 ```text
 candidate and claim
-builder/search task id and distinct reviewer task id
+builder, contract drafter, searcher (when applicable), and reviewer task ids
 decision question
 input and artifact paths
 parameters and sample splits
@@ -55,27 +59,23 @@ forbidden scope changes
 
 The reviewer must not tune, substitute candidates, add a rescue hypothesis, or
 change the evaluation scope. No scope changes are allowed during this pass.
-Require this output:
+Return a verdict, counterevidence, protocol deviations, remaining uncertainty,
+the actual review relation and confirmation level, and the adoption boundary.
+Use the role/level mapping in
+[contract design](contract_design.md#review-relations-and-handoff); the private
+workspace's `AGENTS.md`, `00_RESEARCH_HUB/CONTRACT_BOILERPLATE.md`, and
+`code/scripts/quantx_research_contract_gate_v1.py` own the record contract.
+Do not treat a distinct task id alone as proof of substantive independence.
 
-```text
-verdict = confirmed | partially_confirmed | not_confirmed | invalidated
-confirmation_level = independent_reproduction | independent_analysis | self_review_only
-builder_task_id != reviewer_task_id for an independent claim
-counterevidence
-protocol_deviations
-remaining_uncertainty
-adoption_ready = yes | no
-```
-
-Persist each independent review in the experiment's append-only
+Persist each formal review, including a disclosed non-independent review, in the experiment's append-only
 `review_history.jsonl`. A later synthesis may supersede an earlier verdict, but
 must retain the earlier counterevidence and protocol deviations rather than
 overwriting them.
 
-Use a bounded helper when a genuinely separate pass is practical. If the
-searching agent also performs the review, label it `self_review_only`; it does
-not satisfy the independent-review gate for a promotion-affecting adoption
-proposal.
+If the searching agent also reviews the finding, record the actual entanglement
+under that mapping. Do not identify a searcher as the contract drafter unless
+it drafted the contract. A non-independent review is a valid record but cannot
+satisfy a promotion-affecting independent-review gate.
 
 ## Integration
 

@@ -160,13 +160,28 @@ searcher_task_id when applicable
 reviewer_task_id
 ```
 
+Review verdicts are `confirmed`, `partially_confirmed`, `not_confirmed`, or
+`invalidated`. Retain counterevidence, protocol deviations, remaining
+uncertainty, and the adoption boundary even when the verdict is favourable.
+
 Use these relations:
 
-| Relation | Meaning | Governance consequence |
+| Relation | Meaning | Valid confirmation levels |
 |---|---|---|
-| `independent` | reviewer differs from drafter and, when recorded, searcher | may support governance only if the substantive review passes |
-| `drafter_self_review` | reviewer drafted the contract | valid record; `adoption_ready=false`, `governance_eligible=false` |
-| `non_independent` | another disclosed entanglement, such as searcher-reviewer | valid record with reason; same fail-closed consequence |
+| `independent` | reviewer differs from drafter and, when recorded, searcher; no other entanglement | `independent_analysis`, `independent_reproduction` |
+| `drafter_self_review` | reviewer drafted the contract | `analysis_by_drafter`, `numeric_reproduction_by_drafter` |
+| `non_independent` | another disclosed entanglement, such as searcher-reviewer | `self_review_analysis`, `self_review_numeric_reproduction` |
+
+Both non-independent relations require `adoption_ready=false` and
+`governance_eligible=false`; `non_independent` also requires a nonempty
+`non_independence_reason`. New rows require `contract_drafter_task_id`.
+The private gate additionally requires builder and reviewer ids to differ for
+every relation; a drafter self-review is not an exception to that constraint.
+If the actual roles cannot satisfy the schema, report the mismatch rather than
+invent identities. The current field contract belongs to repository `AGENTS.md`,
+`00_RESEARCH_HUB/CONTRACT_BOILERPLATE.md`, and
+`code/scripts/quantx_research_contract_gate_v1.py`; this table is the portable
+mapping, not a second authority.
 
 For a numerical postformal review, recompute at least one headline figure from
 source inputs rather than from the builder's summary. Vary the seed when

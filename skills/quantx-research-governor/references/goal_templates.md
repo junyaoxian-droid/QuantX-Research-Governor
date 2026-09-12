@@ -8,17 +8,23 @@
 - Iteration ledger template
 - Pre-goal scout
 - Single-hypothesis, signal-review, and governance templates
-- Native goal authorization and integrity
+- Contract readiness
 - Adaptive iteration and candidate freeze
 - User stop / pause handling
-- Native goal completion audit
+- Research closure audit
+
+This file governs experiment contracts and research iteration. Optional Codex
+native goal controls are governed only by [native_goal_control.md](native_goal_control.md).
+GOAL.md, experiment execution authorization, and native tracking authorization
+are separate. An authorized experiment may run without native tracking; do not
+ask the user to opt out of a feature they did not request.
 
 ## -1. Goal Minimality
 
 Most QuantX tasks should not use GOAL.md or native Codex goal tracking.
 
 ```text
-No GOAL.md / no create_goal for:
+No GOAL.md by default for:
 - signal/trade status review
 - one bounded hypothesis or one replay
 - small/medium validation or exploration with fewer than 5 effective iterations
@@ -37,8 +43,8 @@ Upgrade only when:
 - results may affect active strategy governance
 - the user explicitly asks for a durable experiment contract
 
-If a small task grows into a broad search, pause and ask whether to upgrade to
-a GOAL.md-backed large experiment.
+If a small task grows beyond its authorized scope into a broad search, obtain
+approval for the expanded contract. Preserve sufficient existing authorization.
 ```
 
 ## 0. Vague Goal Intake
@@ -46,7 +52,7 @@ a GOAL.md-backed large experiment.
 Use before any large experiment when the user gives a fuzzy direction.
 
 ```text
-Ask first:
+Resolve from existing context first; ask only for consequential missing choices:
 - 目标类型: 验证 / 优化 / 诊断 / 治理
 - 成功标准:
 - 迭代强度: one-shot / 3 independent failures / 4 effective iterations / >=5 large goal / evening run / user-defined
@@ -64,22 +70,12 @@ Then write:
 - stop rules
 - output contract
 
-Do not call create_goal and do not run broad search until these are captured,
-shown to the user, and explicitly confirmed. The only exception is a QuantX
-Plan-to-GOAL bridge where the user explicitly chose
-`contract_then_execute_if_faithful`; even then, GOAL.md and
-ITERATION_LEDGER.md must be written and verified before create_goal or compute.
-
-After the user confirms a large iterative GOAL.md contract with "确认",
-"同意", "确认，执行", "确认，都同意", or equivalent wording, open native
-Codex goal tracking by default before compute unless the user explicitly opts
-out. The native goal objective must include:
-Experiment contract: docs/reports/<experiment_family>_vN/GOAL.md
-Iteration ledger: docs/reports/<experiment_family>_vN/ITERATION_LEDGER.md
-
-If an active native goal exists but does not include both the GOAL.md path and
-the ITERATION_LEDGER.md path, pause and ask the user to close/recreate/edit it
-before running the large experiment.
+Do not run broad search until the contract and ledger are materialized,
+verified, and covered by explicit execution authorization. Show the contract
+and obtain confirmation when that authorization is missing. A recorded
+`contract_then_execute_if_faithful` choice permits execution after faithful
+verification; do not repeat a confirmation already supplied. Native tracking
+is optional and follows native_goal_control.md independently.
 ```
 
 ## 0A. QuantX Plan-To-GOAL Bridge
@@ -106,16 +102,16 @@ plain-chat intake.
 
 If the user manually opened Plan mode but the request is quick monitor, one
 bounded replay, small/medium validation with fewer than 5 effective iterations,
-governance cleanup, or pre-goal scout, do not create GOAL.md or native goal.
-Use the lightest workflow for that task.
+governance cleanup, or pre-goal scout, use the lightest workflow by default.
+Plan mode alone does not require GOAL.md or authorize native tracking.
 
-Plan intake should end with this bridge choice:
+When the execution handoff is unresolved, offer this bridge choice:
 
 ```text
 执行 Plan 后的衔接方式：
 1. 先落 GOAL.md + ITERATION_LEDGER.md，展示后等我确认。（推荐）
-2. 先落文件；若它们忠实反映本 Plan，则直接开启 native goal 并执行。
-3. 只落文件，不开启 native goal。
+2. 先落文件；若它们忠实反映本 Plan，则直接执行实验。
+3. 只落文件，暂不执行。
 ```
 
 Map the answer to:
@@ -125,12 +121,14 @@ contract_only:
   write GOAL.md and ITERATION_LEDGER.md first, show them, wait for confirmation.
 
 contract_then_execute_if_faithful:
-  write GOAL.md and ITERATION_LEDGER.md first; if verification passes, open
-  native goal with both paths in the objective and then execute.
+  write GOAL.md and ITERATION_LEDGER.md first; execute after faithful verification.
+
+files_only:
+  write and verify GOAL.md and ITERATION_LEDGER.md; no compute authorized.
 
 no_native_goal:
-  write GOAL.md and ITERATION_LEDGER.md first; execute without native goal only
-  after the user explicitly opted out.
+  legacy choice: preserve the user's actual execution scope; native tracking
+  is excluded, but this label alone does not authorize compute.
 ```
 
 When the user selects Plan mode "Execute plan", the first actions are:
@@ -148,8 +146,10 @@ ledger, call create_goal first, or run compute first.
 When a user-approved line-specific pre-goal protocol already selected
 `contract_then_execute_if_faithful`, preserve that recorded choice unless the
 user overrides it. Record the authorization in `ITERATION_LEDGER.md`; it never
-permits skipping GOAL.md, the ledger, question-to-goal trace, or native-goal
-integrity checks.
+permits skipping GOAL.md, the ledger, or question-to-goal trace. Separately
+record whether the approved wording explicitly included native creation;
+the bridge label alone is not native authorization. Honor an existing explicit
+approval of a displayed plan that included native creation under its own rules.
 
 ## A. Large Iterative Strategy Goal
 
@@ -186,8 +186,9 @@ Resource Budget:
 
 Data:
 - Use current DuckDB/Parquet.
-- Respect static top1500 caveat.
-- 2026-05+ real operations are monitor-only unless explicitly scoped.
+- Record the current dataset's universe-selection and survivorship caveats.
+- Recent real operations and post-sample evidence are monitor-only unless
+  explicitly scoped; obtain boundaries from the current data/replay contract.
 
 Selection:
 - Train first.
@@ -204,23 +205,17 @@ Evaluation:
 
 Iteration:
 - Try up to <N> effective adaptive iterations.
-- One iteration means: hypothesis -> complete the agreed experiment evidence
-  path -> read outputs -> verdict -> next direction.
-- The following do not count as iterations: intake/GOAL/ledger writing,
-  environment or data checks, compile/smoke, guard/preflight, baseline
-  reproduction/source replay used to verify setup, bug fixes, report cleanup,
-  and reruns after fixes.
-- Record prep/audit/reproduction work in ITERATION_LEDGER.md with
-  `iteration_counted=no`.
+- Apply section F's complete evidence-loop counting rule; record preparation
+  and audit work with `iteration_counted=no`.
 - Do not pre-schedule all <N> iterations as lightweight probes unless this GOAL explicitly says so.
 - Continue after one failed run, but choose the next direction from the observed evidence.
 - Stop once the declared success criteria are met and verified.
 - Pause after <N> independent failures or a suspected data/label bug.
 - Stop/pause immediately if the user asks to stop, pause, or terminate the goal.
-- Do not claim the goal is stopped while the native goal remains active; pause
-  it with the native control or complete it when the user explicitly terminates it.
+- Record research stop reasons independently of any native state (section G).
 
 Outputs:
+- code/scripts/experiments/<experiment_family>_vN/ for one-off code
 - docs/reports/<experiment_family>_vN/
 - outputs/<experiment_family>_vN/ ignored
 - Plan-to-GOAL bridge choice when the experiment came from Plan mode.
@@ -240,14 +235,16 @@ large iterative experiments.
 
 Goal:
 - GOAL.md:
-- Native goal objective includes GOAL.md and this ledger: yes/no
 - Status: draft / active / user_paused / user_terminated / success / failed_budget / blocked_by_bug
-- Native goal state: not_opened / active / paused / completed / needs_user_ui_pause
-- Native goal close reason: none / user_pause / user_terminated / success / failure_budget / data_bug
+- Research stop/close reason:
+- Native tracking (optional): use the audit fields in native_goal_control.md;
+  record not_requested when absent, never infer state from research status.
 
 Plan-To-GOAL Bridge:
 - Came from Plan mode: yes/no
-- Bridge authorization: contract_only / contract_then_execute_if_faithful / no_native_goal / not_applicable
+- Bridge authorization: contract_only / contract_then_execute_if_faithful / files_only / no_native_goal (legacy) / not_applicable
+- Execution authorization source and exact scope:
+- Native creation explicitly included in approval: yes/no; source wording:
 - Plan answers encoded in GOAL.md: yes/no
 - Verified faithful to Plan before execution: yes/no
 - Next confirmation required: yes/no
@@ -282,7 +279,7 @@ Use `Type=experiment` and `Iteration counted?=yes` only for complete
 experiment loops. Use `Type=prep/audit/reproduction/fix/report` and
 `Iteration counted?=no` for setup, checks, source replay, bug fixes, and
 report cleanup.
-| H1 |  |  |  |  |  |
+| H1 |  |  |  |  |  |  |  |
 ```
 
 ## A0. Pre-Goal Scout
@@ -294,29 +291,29 @@ and says the large goal should happen only if the scout looks promising.
 Classification:
 - pre_goal_scout, not large_iterative_experiment.
 
-Native Goal:
-- Do not call create_goal.
+Contract:
 - Do not create a large GOAL.md contract yet unless the user explicitly asks.
 - Treat "可以规划一个 goal" or "迭代强度可设为 N 次" as future planning hints.
 
 Scope:
-- Folder: <user-requested isolated scout folder, e.g. <new_family_scout>/>.
+- Code: code/scripts/experiments/<scout_id>/.
+- Full artifacts: outputs/<scout_id>/ (ignored).
+- Review pack: docs/reports/<scout_id>/.
 - Read shared workspace context and current cache contracts.
 - Keep early work small: data inspection, hypothesis sketch, small sample,
   reproducible skeleton, or scout note.
 - Do not disturb adopted governance or other research lines.
 
 Output:
-- <folder>/SCOUT_PLAN.md or <folder>/README.md when useful.
+- docs/reports/<scout_id>/SCOUT_PLAN.md or README.md when useful.
 - What evidence would justify promotion to GOAL.md.
 - Open questions before a large experiment.
 
 Promotion:
 - If the scout is promising, draft docs/reports/<experiment>_vN/GOAL.md.
-- Show the contract path and wait for explicit confirmation.
-- After confirmation, open native Codex goal tracking by default unless the
-  user explicitly says not to, and include both GOAL.md and ITERATION_LEDGER.md
-  paths in the objective.
+- Materialize and verify the matching ITERATION_LEDGER.md before compute.
+- Show the contract and obtain execution authorization if not already given.
+- Apply section 0's intake and readiness gates; native tracking stays optional.
 ```
 
 ## B. Single Hypothesis Check
@@ -324,9 +321,9 @@ Promotion:
 Use when the user wants to test one idea.
 
 ```text
-Native Goal:
-- Do not call create_goal.
-- Do not create GOAL.md unless the user explicitly upgrades this to a large iterative experiment.
+Contract:
+- Do not create GOAL.md unless the user explicitly requests a durable contract
+  or upgrades this to a large iterative experiment.
 
 Objective:
 - Test whether <hypothesis> improves <line> under fixed evaluation.
@@ -345,8 +342,7 @@ Report:
 Use for strategy status, an adopted-core signal, or execution discipline.
 
 ```text
-Native Goal:
-- Do not call create_goal.
+Contract:
 - Do not create GOAL.md.
 
 Read CURRENT_SHELL_REGISTRY.md before any strategy artifact or runner.
@@ -373,8 +369,7 @@ Record discretionary facts only when the user asks for a journal update.
 Use for project memory and workspace organization.
 
 ```text
-Native Goal:
-- Do not call create_goal.
+Contract:
 - Do not create GOAL.md unless the user explicitly asks for a long-running governance goal.
 
 Read current source-of-truth files.
@@ -386,30 +381,7 @@ Do not touch data_cache, outputs, positions, live config.
 Report remaining divergences and commit scope.
 ```
 
-## E. Native Goal Authorization And Integrity
-
-Treat “goal” as planning language until the user has seen the GOAL.md path and
-a concise contract summary.
-
-Do not interpret these as `create_goal` authorization before contract review:
-
-```text
-可以规划一个 goal
-可以考虑开 goal
-先探索，有可能后再大规模实验
-我希望你想一个 goal
-先帮我确认 / 先问我问题
-```
-
-After the large contract has been shown, treat clear execution confirmation as
-authorization to open native goal tracking unless the user opts out:
-
-```text
-确认，执行
-确认，都同意
-按这份 GOAL.md 跑
-确认，开启 native goal
-```
+## E. Contract Readiness
 
 Before compute, verify:
 
@@ -417,13 +389,13 @@ Before compute, verify:
 GOAL.md exists and matches confirmed requirements
 ITERATION_LEDGER.md exists and matches GOAL.md
 question-to-goal trace is complete
-native goal is authorized or the user explicitly opted out
-native objective includes both contract paths
+execution authorization covers this scope
 resource gate is recorded for heavy work
 ```
 
-If an active native goal lacks either path, pause and ask the user to repair or
-recreate it. Do not continue a large experiment under an unlinked native goal.
+If native tracking was explicitly requested, also apply
+[native_goal_control.md](native_goal_control.md). Its absence does not block
+an otherwise authorized experiment.
 
 ## F. Adaptive Iteration And Candidate Freeze
 
@@ -505,17 +477,15 @@ Then:
 1. Do not launch more compute.
 2. Do not kill an active process unless the user explicitly requests it or a
    confirmed GOAL.md stop rule authorizes it.
-3. Update the ledger with `user_paused`, `user_terminated`, or the actual
-   available native state.
-4. Use the native pause control when available. If it is unavailable, explain
-   that UI pause or termination is still required.
-5. Do not claim the goal is paused or stopped while native state remains active
-   without explicitly saying what user action remains.
-6. Preserve completed iterations, artifacts, and the exact resume command.
+3. Record the research status `user_paused` or `user_terminated`, the reason,
+   completed iterations, artifacts, active-process status, and exact resume command.
+4. If native tracking exists, record its actual state separately and apply
+   native_goal_control.md. Report accurately that new research work has stopped
+   even if native state is still active; do not imply a native transition occurred.
 
-## H. Native Goal Completion Audit
+## H. Research Closure Audit
 
-Before `update_goal(status="complete")`, read:
+Before closing or handing off the research, read:
 
 ```text
 GOAL.md
@@ -533,10 +503,10 @@ blocked_by_fatal_data_or_baseline_issue
 still_open
 ```
 
-Do not complete while any required item is `still_open` unless the user accepts
-early closure after seeing the remaining work.
+Keep unresolved items visible. User acceptance of early research closure does
+not turn unmet objectives into satisfied ones or complete a native goal.
 
-Complete only when one of these closes the whole goal:
+Record the actual whole-research close reason:
 
 ```text
 verified success gate
@@ -546,9 +516,11 @@ fatal whole-goal data/PIT/baseline issue
 declared whole-goal stop rule
 ```
 
-Failure of one branch, mapping gate, or replay path is not whole-goal
-completion while budget remains. Record `needs_next_iteration`,
-`needs_reproduction`, or a real paused state instead.
+These are research outcomes, not native status mappings. Apply
+native_goal_control.md before any native state update. Failure of one branch,
+mapping gate, or replay path is not whole-research closure while budget remains
+and no whole-goal stop rule applies. Record `needs_next_iteration`,
+`needs_reproduction`, or the actual research pause reason instead.
 
 Final closeout must state the close reason, counted iterations versus budget,
 open risks, adoption boundary, and the next useful plan.

@@ -47,6 +47,7 @@ skills/quantx-research-governor/   the skill itself
   SKILL.md                         entry point: routing, lifecycle, safety
   references/                      loaded conditionally, not all at once
     goal_templates.md              goal intake, plan-to-GOAL bridge, ledgers
+    native_goal_control.md         optional tracking authorization and tool states
     contract_design.md             feasibility, gate semantics, conformance
     research_protocol.md           selection order, test ledger, placebo, stress
     report_contract.md             report sections and output file contract
@@ -85,6 +86,13 @@ send the agent looking for files you do not have.
 The same applies to `references/report_contract.md`, which names an output file
 pack that assumes a particular directory layout.
 
+Experiment execution and native Codex goal tracking have separate authorization.
+Unopened samples remain `not_opened`; report templates do not authorize access.
+Review records distinguish the builder, drafter, searcher, and reviewer, with
+confirmation levels matched to the actual relationship. Read-only audits do
+not require a write-task closeout, and bounded helpers default to medium
+reasoning unless the user chooses otherwise.
+
 For a complete example, start with
 [`templates/experiment-contract.md`](templates/experiment-contract.md), then
 run the synthetic lifecycle validator described in
@@ -105,7 +113,7 @@ backtest engine.
 
 `QuantX-GoalForge` was archived on 2026-08-05 and folded into this repository.
 Its goal-governance docs, prompt templates, and two `goal-governor` skills were
-superseded by `references/goal_templates.md`, which is a strict superset. The
+superseded by the experiment and native-goal references above. The
 one piece worth keeping — its case study — is now `docs/case-study.md`.
 `protocol/protocol-v2.md` was likewise superseded by
 `references/research_protocol.md` and removed. Both repositories' full histories

@@ -36,6 +36,7 @@ skills/quantx-research-governor/   skill 本体
   SKILL.md                         入口：路由、生命周期、安全边界
   references/                      按需加载，不一次全读
     goal_templates.md              目标 intake、plan-to-GOAL 桥接、迭代账本
+    native_goal_control.md         可选 native tracking 的授权与工具状态
     contract_design.md             仪器可行性、门语义与 runner 一致性
     research_protocol.md           选择顺序、test ledger、placebo、压力测试
     report_contract.md             报告结构与输出文件契约
@@ -70,6 +71,11 @@ docs/case-study.md                        私有工作区的经验复盘
 
 `references/report_contract.md` 同理，它规定的输出文件包假设了特定的目录布局。
 
+实验执行与 native Codex goal tracking 分别授权。未开启样本保持 `not_opened`，
+报告模板不授予样本访问权限。复核记录区分 builder、drafter、searcher 和 reviewer，
+confirmation level 必须符合真实关系。纯只读审查不要求写入任务的收尾流程；
+有明确边界的子代理默认使用 medium 推理，用户另有选择时从其设置。
+
 完整使用路径可以从 [`templates/experiment-contract.md`](templates/experiment-contract.md)
 开始，再按
 [`references/golden_path_fixture.md`](skills/quantx-research-governor/references/golden_path_fixture.md)
@@ -87,8 +93,8 @@ docs/case-study.md                        私有工作区的经验复盘
 ## 沿革
 
 `QuantX-GoalForge` 已于 2026-08-05 归档并并入本仓库。它的 goal governance 文档、
-prompt 模板和两个 `goal-governor` skill 均被 `references/goal_templates.md` 覆盖
-（后者是严格超集）。唯一值得保留的案例复盘，现为 `docs/case-study.md`。
+prompt 模板和两个 `goal-governor` skill 已由上述实验与 native goal references 接替。
+保留的案例复盘现为 `docs/case-study.md`。
 `protocol/protocol-v2.md` 同样被 `references/research_protocol.md` 取代并删除。
 两个仓库的完整历史已保存为本地 git bundle。
 
